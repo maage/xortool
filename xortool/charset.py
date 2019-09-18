@@ -1,5 +1,7 @@
 import string
 
+import numpy as np
+
 
 class CharsetError(Exception):
     pass
@@ -20,7 +22,7 @@ PREDEFINED_CHARSETS = {
 }
 
 
-def get_charset(charset):
+def _get_charset_string(charset):
     charset = charset or "printable"
     if charset in PREDEFINED_CHARSETS:
         return PREDEFINED_CHARSETS[charset].encode("ascii")
@@ -31,3 +33,7 @@ def get_charset(charset):
         return _
     except KeyError:
         raise CharsetError("Bad character set: ", charset)
+
+
+def get_charset(charset):
+    return np.array(list(_get_charset_string(charset)), dtype=np.uint8)
